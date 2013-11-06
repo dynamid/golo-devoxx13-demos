@@ -2,7 +2,7 @@ module like.go
 
 struct Point = { x, y }
 
-augment demo12.types.Point {
+augment like.go.types.Point {
 
   function moveBy = |this, dx, dy| {
     this: x(this: x() + dx)
