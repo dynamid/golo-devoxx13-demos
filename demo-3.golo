@@ -1,28 +1,10 @@
-module augmentations
+module std.augmentations
 
 import java.util.LinkedList
 
-augment java.util.List {
-  
-  function odds = |this| {
-    let result = LinkedList()
-    foreach (i in this) {
-      if (i % 2) == 1 {
-        result: add(i)
-      }
-    }
-    return result
-  }
-}
-
 function main = |args| {
-  let list = LinkedList()
-  list: add(1)
-  list: add(2)
-  list: add(3)
-  println(list: odds())
+  let list = LinkedList(): append(1, 2, 3, 4, 5, 6)
+  let odds = list: filter(|x| -> (x % 2) == 1)
+  println(odds)
 }
-
-
-
 

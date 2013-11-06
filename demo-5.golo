@@ -1,28 +1,48 @@
-module fetch.url
+module data
 
 function main = |args| {
-  let page = "https://plus.google.com"
-  let html = page: toURL(): getContent(): readFully()
-  println(html)
-}
+  
+  # All literals
+  let data = [
+    [1, 2, 3],
+    tuple[1, 2, 3],
+    array[1, 2, 3],
+    set[1, 2, 3, 3, 1],
+    map[
+      ["a", 10],
+      ["b", 20]
+    ],
+    vector[1, 2, 3],
+    list[1, 2, 3]
+  ]
 
-augment java.lang.String {
+  # Dump!
+  data: each(|element| {
+    println(element: toString())
+    println("  type: " + element: getClass())
+  })
 
-  function toURL = |this| -> java.net.URL(this)
-}
+  readln("Next when ready...")
 
-augment java.io.InputStream {
+  # Data model
+  let contacts = map[
+    ["mrbean", map[
+      ["email", "bean@gmail.com"],
+      ["url", "http://mrbean.com"]
+    ]],
+    ["larry", map[
+      ["email", "larry@iamricherthanyou.com"]
+    ]]
+  ]
 
-  function readFully = |this| {
-    let streamReader = java.io.InputStreamReader(this)
-    let reader = java.io.BufferedReader(streamReader)
-    let buffer = java.lang.StringBuilder()
-    var line = 0
-    while line isnt null {
-      line = reader: readLine()
-      buffer: append(line orIfNull "")
-    }
-    reader: close()
-    return buffer: toString()
-  }
+  # MrBean and Larry
+  let mrbean = contacts: get("mrbean")
+  let larry = contacts: get("larry")
+  
+  # Illustrates orIfNull
+  println(mrbean: get("url") orIfNull "n/a")
+  println(larry: get("url") orIfNull "n/a")
+
+  # Querying a non-existent data model because there is no 'address' entry
+  println(mrbean: get("address")?: street()?: number() orIfNull "n/a")
 }

@@ -1,17 +1,16 @@
-module dynobj
+module like.go
+
+struct Point = { x, y }
+
+augment demo12.types.Point {
+
+  function moveBy = |this, dx, dy| {
+    this: x(this: x() + dx)
+    this: y(this: y() + dy)
+    return this
+  }
+}
 
 function main = |args| {
-
-  let counter = DynamicObject():
-    define("value", 0):
-    define("incr", |this| {
-      this: value(this: value() + 1)
-      return this
-    })
-  
-  println(counter: value())
-  
-  counter: incr(): incr()
-  
-  println(counter: value())
+  println(Point(1, 1): moveBy(10, -5))
 }

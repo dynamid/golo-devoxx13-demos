@@ -1,23 +1,24 @@
-module swingy
+module matching
 
-import java.awt.event
-import javax.swing
-import javax.swing.WindowConstants
+local function data = -> list[
+  "foo@bar.com", 
+  "+33.6.11.22.33",
+  "http://golo-lang.org/",
+  "def foo = bar(_._) with :> T"
+]
+
+function what_it_could_be = |item| -> match {
+  when item: contains("@") then "an email?"
+  when item: startsWith("+33") then "a French phone number?"
+  when item: startsWith("http://") then "a website URL?"
+  otherwise "I have no clue, mate!"
+}
 
 function main = |args| {
-
-  let frame = JFrame("Action listeners")
-  frame: setDefaultCloseOperation(EXIT_ON_CLOSE())
-
-  let button = JButton("Click me!")
-  button: setFont(button: getFont(): deriveFont(96.0_F))
-
-  let handler = |event| -> println("[click]")
-  button: addActionListener(handler: to(ActionListener.class))
-
-  frame: getContentPane(): add(button)
-  frame: pack()
-  frame: setVisible(true)
+  foreach (item in data()) {
+    println(item + "\n\t" + what_it_could_be(item))
+  }
 }
+
 
 
