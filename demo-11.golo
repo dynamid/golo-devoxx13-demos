@@ -5,7 +5,8 @@ import spark.Spark
 
 function main = |args| {
 
-  let conf = map[
+  # Configuration
+  let adaptation = map[
     ["extends", "spark.Route"],
     ["implements", map[
       ["handle", |this, request, response| {
@@ -14,10 +15,11 @@ function main = |args| {
     ]]
   ]
   
+  # Adapter "factory"
   let fabric = AdapterFabric()
-  let routeMaker = fabric: maker(conf)
-  let route = routeMaker: newInstance("/")
- 
-  get(route)
+  let routeMaker = fabric: maker(adaptation)
+
+  # Make Spark happy
+  get(routeMaker: newInstance("/"))
 }
 
