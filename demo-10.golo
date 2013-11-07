@@ -6,6 +6,7 @@ import java.net.InetSocketAddress
 import com.sun.net.httpserver
 import com.sun.net.httpserver.HttpServer
 
+# A beautiful Golo template
 local function index_template = -> """
 <%@params posts %>
 <!DOCTYPE html>
@@ -31,15 +32,26 @@ local function index_template = -> """
 """
 
 function main = |args| {
-  let index_tpl = gololang.TemplateEngine(): compile(index_template())
+  
+  # Model
   let posts = java.util.concurrent.ConcurrentLinkedDeque()
+
+  # Server
   let server = HttpServer.create(InetSocketAddress("localhost", 8081), 0)
+
+  # Get a template function
+  let index_tpl = TemplateEngine(): compile(index_template())
+
+  # "Dependency injection"
   let index = ^index: bindTo(posts): bindTo(index_tpl)
+
+  # Server start
   server: createContext("/", handler(index))
   server: start()
   println(">>> http://localhost:8081/")
 }
 
+# HTTP requests on /
 local function index = |posts, template, exchange| {
   if exchange: getRequestMethod() == "POST" {
     extract_post(exchange, posts)
