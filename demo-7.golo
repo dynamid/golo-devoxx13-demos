@@ -1,9 +1,9 @@
 module matching
 
 local function data = -> list[
-  "foo@bar.com", 
+  "julien@type-unsafe.com", 
   "+33.6.11.22.33",
-  "http://golo-lang.org/",
+  "http://type-unsafe.com/",
   "def foo = bar(_._) with :> T"
 ]
 
